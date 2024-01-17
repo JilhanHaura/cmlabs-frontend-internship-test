@@ -1,11 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     let activeFilter = document.querySelector('.filters_menu .active');
     const lastSelectedCategory = localStorage.getItem('selectedCategory');
-    let displayedItems = 0;
 
-    function showMoreItems() {
-        displayedItems += 6;
-
+    function showItems() {
         fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
             .then(response => response.json())
             .then(data => {
@@ -33,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 const filtersContent = document.querySelector('.filters-content .row');
                 filtersContent.innerHTML = '';
-                data.meals.slice(0, displayedItems).forEach(meal => {
+                data.meals.forEach(meal => {
                     const colItem = document.createElement('div');
                     colItem.classList.add('col-sm-6', 'col-lg-4', 'all', categoryName.toLowerCase());
                     colItem.innerHTML = `<div class="box">
@@ -73,9 +70,5 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = `meal-detail.html?category=${categoryName}&mealId=${mealId}`;
     }
 
-    const viewMoreButton = document.getElementById('viewMoreButton');
-    if (viewMoreButton) {
-        viewMoreButton.addEventListener('click', showMoreItems);
-    }
-    showMoreItems();
+    showItems();
 });
